@@ -8,18 +8,16 @@ import json
 class KafkaConsumerAvro:
     def __init__(self):
         self.topic = "avro-topic"
-        self.schema_registry_conf = {
+        self.schema_registry_client = SchemaRegistryClient({
             "url": "http://192.168.114.31:8889"
-        }
-        self.schema_registry_client = SchemaRegistryClient(self.schema_registry_conf)
-        self.conf = {
+        })
+        self.consumer = DeserializingConsumer({
             "bootstrap.servers": "kafka.114.31",
             "group.id": "avro-consumer-group",
             "auto.offset.reset": "earliest",
             "key.deserializer": StringDeserializer("utf_8"),
             "value.deserializer": AvroDeserializer(self.schema_registry_client),
-        }
-        self.consumer = DeserializingConsumer(self.conf)
+        })
 
     def consume(self):
         self.consumer.subscribe([self.topic])

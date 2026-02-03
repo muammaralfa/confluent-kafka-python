@@ -4,10 +4,9 @@ import json
 
 class ProducerKafka:
     def __init__(self):
-        self.conf = {
+        self.producer = Producer({
             "bootstrap.servers": "kafka.114.31"
-        }
-        self.producer = Producer(self.conf)
+        })
         self.topic = 'confluent-topic'
 
     def delivery_report(self, err, message):

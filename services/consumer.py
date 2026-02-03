@@ -4,14 +4,13 @@ import json
 
 class kafkaConsumer:
     def __init__(self):
-        self.conf = {
+        self.topic = "confluent-topic"
+        self.consumer = Consumer({
             "bootstrap.servers": "kafka.114.31",
             "group.id": "python-consumer-group",
             "auto.offset.reset": "earliest",
             "enable.auto.commit": False  # recommended for better control
-        }
-        self.topic = "confluent-topic"
-        self.consumer = Consumer(self.conf)
+        })
 
     def consume(self):
         self.consumer.subscribe([self.topic])

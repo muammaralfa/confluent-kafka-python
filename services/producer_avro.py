@@ -5,9 +5,7 @@ from confluent_kafka.schema_registry.avro import AvroSerializer
 
 class ProducerAvro(object):
     def __init__(self):
-        self.schema_registry_conf = {
-            "url": "http://192.168.114.31:8889"
-        }
+        self.topic = "avro-topic"
         self.schema_str = """
             {
               "type": "record",
@@ -19,16 +17,17 @@ class ProducerAvro(object):
               ]
             }
         """
-        self.schema_registry_client = SchemaRegistryClient(self.schema_registry_conf)
+        self.schema_registry_client = SchemaRegistryClient({
+            "url": "http://192.168.114.31:8889"
+        })
         self.avro_serializer = AvroSerializer(
             self.schema_registry_client,
             self.schema_str,
         )
-        self.producer_conf = {
+        self.producer = SerializingProducer({
             "bootstrap.servers": "kafka.114.31",
             "value.serializer": self.avro_serializer,
-        }
-        self.producer = SerializingProducer(self.producer_conf)
+        })
 
     def delivery_report(self, err, message):
         if err is not None:
@@ -38,13 +37,12 @@ class ProducerAvro(object):
 
     def produce(self, message):
         self.producer.produce(
-            topic="avro-topic",
+            topic=self.topic,
             key=message.get('id'),
             value=message,
             on_delivery=self.delivery_report,
         )
         self.producer.flush()
-
 
 
 if __name__ == '__main__':
