@@ -21,8 +21,8 @@ class kafkaConsumer:
 
             When to use
             - Event-driven processing
-            - Low-volume consumers
-            - Simpler logic
+            - high-volume consumers
+            - batch logic
         """
         
         self.consumer.subscribe([self.topic])
