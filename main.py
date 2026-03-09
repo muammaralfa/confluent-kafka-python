@@ -1,4 +1,4 @@
-from services.consumer import kafkaConsumer
+from services.consumer_poll import kafkaConsumer
 from services.consumer_avro import KafkaConsumerAvro
 
 class Main:

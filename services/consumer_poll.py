@@ -13,6 +13,18 @@ class kafkaConsumer:
         })
 
     def consume(self):
+        """
+            consumer.poll() = fetches one message at a time.
+            - Waits up to timeout for a message.
+            - Returns one message only.
+            - If no message → returns None.
+
+            When to use
+            - Event-driven processing
+            - Low-volume consumers
+            - Simpler logic
+        """
+
         self.consumer.subscribe([self.topic])
         print("[^][^] Consuming messages from topic '{}'".format(self.topic))
         try:
